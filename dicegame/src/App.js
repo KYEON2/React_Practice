@@ -1,33 +1,37 @@
+import { useState } from 'react';
+import Board from './Board';
 import Button from './Button';
-import Dice from './Dice';
+
+function random(n) {
+  return Math.ceil(Math.random() * n);
+}
 
 function App() {
+  const [myHistory, setMyHistory] = useState([]);
+  const [otherHistory, setOtherHistory] = useState([]);
+
+  const handleRollClick = () => {
+    const nextMyNum = random(6);
+    const nextOtherNum = random(6);
+    setMyHistory([...myHistory, nextMyNum]);
+    setOtherHistory([...otherHistory, nextOtherNum]);
+  };
+
+  const handleClearClick = () => {
+    setMyHistory([]);
+    setOtherHistory([]);
+  };
+
   return (
     <div>
-      <Button>던지기</Button>
-      <Button>처음부터</Button>
-      <Dice color="red" num={4} />
+      <Button onClick={handleRollClick}>던지기</Button>
+      <Button onClick={handleClearClick}>처음부터</Button>
+      <div>
+        <Board name="나" color="blue" gameHistory={myHistory} />
+        <Board name="상대" color="red" gameHistory={otherHistory} />
+      </div>
     </div>
   );
 }
 
 export default App;
-
-
-
-
-
-/*import HandButton from './HandButton';
-
-function App() {
-    const handleClick = (value) => console.log(value);
-  return (
-    <div>
-      <HandButton value="rock" onClick={handleClick} />
-      <HandButton value="scissor" onClick={handleClick} />
-      <HandButton value="paper" onClick={handleClick} />
-    </div>
-  );
-}
-
-export default App; */
